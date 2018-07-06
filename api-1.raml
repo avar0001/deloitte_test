@@ -1,0 +1,165 @@
+#%RAML 1.0
+title: My Giphy API
+version: 1.0
+description: An API to presents a selection of G-rated GIFs for a specified search term.
+
+resourceTypes: 
+  readOnlyCollection: 
+    description: Collection of Avaliable <<resourcePathNAme>> in GifEngine.
+    get:
+      description: Get a list of <<resourcePathName>>.
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                <<exampleCollection>>
+  collection:
+    description: Collection of available <<resourcePathName>> in GifEngine.
+    get:
+      description: Get a list of <<resourcePathName>>.
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                <<exampleCollection>>
+  collection-item:
+    description: Entity representing a <<resourcePathName|!singularize>>
+    get:
+      description: |
+        Get the <<resourcePathName|!singularize>>
+        with <<resourcePathName|!singularize>>Id =
+        {<<resourcePathName|!singularize>>Id}
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                <<exampleItem>>
+        404:
+          body:
+            application/json:
+              example: |
+                {"message": "<<resourcePathName|!singularize>> not found" }                
+traits:
+  searchable:
+    queryParameters:
+      query:
+        description: |
+          JSON array [{"field1","value1","operator1"},{"field2","value2","operator2"},...,{"fieldN","valueN","operatorN"}] <<description>>
+        example: |
+          <<example>>
+
+/searchGifs:
+  type:
+    collection:
+      exampleCollection: !include gifengine-include-gifs.sample
+  /file-content:
+    description: the file to be reproduced by client
+    get:
+      description: Get the File Content
+      responses: 
+        200:
+          body: 
+            image/gif:
+              example: |
+                !include giphy9.gif
+    post:
+      
+       
+      
+        
+        
+      
+  displayName: Gif Engine
+  description: this is tool to find gif
+  get: #Method Decelaration
+    description: This is Get method
+    responses: 
+      200: # status code
+        description: Gif found Ok
+        body: 
+          application/json:
+            example: |
+              [
+                {
+                    "ID":"YsTs5ltWtEhnq",
+                    "Description":"Happy Dancing GIF",
+                    "UrlBitly": "http://gph.is/1gsWDcL",
+                    "UrlLooping": "http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/",
+                    "DOC": 2013-08-01 12:41:48,
+                    "Creator":"JoeCool4000"
+                 },
+                   {
+                    "ID":"PTs5lt72tEhnq",
+                    "Description":"cat",
+                    "UrlBitly": "http://gph.is/1g45WDcp",
+                    "UrlLooping": "http://www.reddit.com/r/reactiongifs/comments/1xpyaa/cat_smilling/",
+                    "DOC": 2012-08-01 12:41:48,
+                    "Creator":"manonMoon"
+                 }
+              ]
+  post:  
+    body: 
+      application/json:
+        example: |
+          {
+                    "ID":"YsTs5ltWtEhnq",
+                    "Description":"Happy Dancing GIF",
+                    "UrlBitly": "http://gph.is/1gsWDcL",
+                    "UrlLooping": "http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/",
+                    "DOC": 2013-08-01 12:41:48,
+                    "Creator":"JoeCool4000"
+           },
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              {"message" :"Gif Found"}
+  /{gifID}:
+    get:
+      queryParameters: 
+        id:
+          displayName: ID
+          description: Search via ID
+          example: "YsTs5ltWtEhnq"
+          required: true
+          type: string
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                    "ID":"YsTs5ltWtEhnq",
+                    "Description":"Happy Dancing GIF",
+                    "UrlBitly": "http://gph.is/1gsWDcL",
+                    "UrlLooping": "http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/",
+                    "DOC": 2013-08-01 12:41:48,
+                    "Creator":"JoeCool4000"
+                 }
+  /{gifName}:
+    get:
+      queryParameters: 
+        name:
+          displayName: Term
+          description: Search Via object/ emotion
+          minLength: 3
+          required: true
+          type: string 
+      responses: 
+        200:
+          body: 
+            application/json:
+              example: |
+                {
+                    "ID":"YsTs5ltWtEhnq",
+                    "Description":"Happy Dancing GIF",
+                    "UrlBitly": "http://gph.is/1gsWDcL",
+                    "UrlLooping": "http://www.reddit.com/r/reactiongifs/comments/1xpyaa/superman_goes_to_hollywood/",
+                    "DOC": 2013-08-01 12:41:48,
+                    "Creator":"JoeCool4000"
+                 }
+                 
